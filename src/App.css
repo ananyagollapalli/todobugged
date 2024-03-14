@@ -64,3 +64,6 @@
 .delete-button:hover {
   background-color: #c82333;
 }
+.todo-item.completed{
+  background-color: green;
+}

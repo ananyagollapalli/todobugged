@@ -6,42 +6,37 @@ const MaxTodoLimitBug = () => {
   const [checkedTodos, setCheckedTodos] = useState({});
 
   const handleInputChange = (event) => {
-    const inputValue = event.target.value;
-    if (inputValue.length > 10) {
-      alert('You are exceeding the character limit!');
-      setTodoValue(inputValue.slice(0, 10));
-    } else {
-      setTodoValue(inputValue);
-    }
+    setTodoValue(event.target.value);
   };
 
   const addTodo = () => {
-    if (todos.length >= 8) {
-      alert('Maximum limit of 15 todo items reached!');
+    if (todoValue.trim() === '') {
+      alert('Todo text cannot be empty!');
       return;
     }
 
-    const newId = Math.max(...todos.map(todo => todo.id), 0) + 1;
+    const newId = todos.length + 1;
     const newTodo = { id: newId, text: todoValue };
 
     setTodos([...todos, newTodo]);
-    setCheckedTodos({ ...checkedTodos, [newId]: false }); 
-    setTodoValue(''); 
+    setCheckedTodos({ ...checkedTodos, [newId]: false });
+    setTodoValue('');
   };
 
   const deleteTodo = (idToDelete) => {
-    console.log("Deleted todo with id:", idToDelete);
+    const updatedTodos = todos.filter(todo => todo.id !== idToDelete);
+    setTodos(updatedTodos);
   };
 
-  const toggleTodoColor = (id) => {
+  const toggleTodoCompletion = (id) => {
     setCheckedTodos({ ...checkedTodos, [id]: !checkedTodos[id] });
   };
 
   return (
     <div className="todo-container">
-      <h2 className="title">Todo List (Maximum limit: 10)</h2>
+      <h2 className="title">Todo List</h2>
       <input
-        type="number"
+        type="text"
         value={todoValue}
         onChange={handleInputChange}
         placeholder="Enter todo text"
@@ -54,7 +49,7 @@ const MaxTodoLimitBug = () => {
             <input
               type="checkbox"
               checked={checkedTodos[todo.id]}
-              onChange={() => toggleTodoColor(todo.id)}
+              onChange={() => toggleTodoCompletion(todo.id)}
               className="todo-checkbox"
             />
             <span className="todo-text">{todo.text}</span>
